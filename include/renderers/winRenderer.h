@@ -13,4 +13,6 @@ public:
 	virtual int init(const char* win_text, int w, int h);
 	virtual SDL_Event& event_pass();
 	virtual int quit();
+	virtual void clearScreen();
+	virtual void presentScreen();
 };

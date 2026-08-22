@@ -8,7 +8,7 @@
 
 struct sceneInfo
 {
-	std::unique_ptr<sceneBase> instance;
+	std::unique_ptr<sceneBase> instance = nullptr;
 
 	bool bgProcess = false;
 	int id = 0;
@@ -19,8 +19,11 @@ class sceneManager {
 	Renderer* renderer;
 
 public:
-	std::vector<std::unique_ptr<sceneBase>> scenes;
+	std::vector<std::unique_ptr<sceneInfo>> scenes;
+	int curScene;
 	sceneManager();
 
 	void init(Renderer* renderer);
+	void tick();
+	void create_scene(int id, bool bgTask);
 };

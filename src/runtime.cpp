@@ -30,6 +30,13 @@ void runtime::init(Renderer* renderer, SDL_Event& event) {
 
         if (!running) break;
 
+        renderer->clearScreen();
+
+        // rendering loop
+        sceneManager->tick();
+
+        renderer->presentScreen();
+
         auto workTime = std::chrono::steady_clock::now() - frameStart;
         auto sleepTime = frameDuration - workTime;
 

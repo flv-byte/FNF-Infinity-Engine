@@ -27,3 +27,12 @@ int winRenderer::quit() {
 	SDL_Quit();
 	return 0;
 }
+
+void winRenderer::clearScreen() {
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+	SDL_RenderClear(renderer);
+}
+
+void winRenderer::presentScreen() {
+	SDL_RenderPresent(renderer);
+}
