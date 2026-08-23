@@ -19,6 +19,9 @@ void runtime::init(Renderer* renderer) {
     auto frameDuration = std::chrono::duration_cast<std::chrono::nanoseconds>(double_ms(1000.0 / fpsTarget));
 
     bool running = true;
+
+    int width;
+    int height;
      
     while (running) {
         auto frameStart = std::chrono::steady_clock::now();
@@ -50,5 +53,8 @@ void runtime::init(Renderer* renderer) {
         auto frameTime = frameEnd - frameStart;
         fps = 1.0 / std::chrono::duration<double>(frameTime).count();
         std::cout << fps << '\n';
+        if (renderer->getGameDimensions(width, height) == 0) {
+            std::cout << width << 'x' << height << '\n';
+        }
     }
 }
