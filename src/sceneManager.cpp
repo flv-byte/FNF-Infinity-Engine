@@ -2,7 +2,7 @@
 #include <sceneManager.h>
 #include <memory>
 #include <sceneBase.h>
-#include <scenes/debug/debug.h>
+#include "debug/debug.h"
 #include <random>
 #include <algorithm>
 
@@ -52,7 +52,7 @@ void sceneManager::create_scene(int id, bool bgTask)
         curScene->uid = uid;
         curScene->bgProcess = bgTask;
 
-        curScene->instance->init();
+        curScene->instance->init(renderer);
 
         scenes.push_back(std::move(curScene));
 

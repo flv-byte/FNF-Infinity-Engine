@@ -1,10 +1,13 @@
 #pragma once
+
 #include <renderer.h>
 #include <sceneBase.h>
 
-class debugScene : sceneBase {
-	Renderer* renderer;
+class debugScene : public sceneBase
+{
+    Renderer* renderer = nullptr;
+
 public:
-	virtual override void init(Renderer* renderer);
-	virtual override void tick(sceneInfo& info);
+    void init(Renderer* renderer) override;
+    void tick(sceneInfo& info) override;
 };

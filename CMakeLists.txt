@@ -25,8 +25,6 @@ if (WIN32 AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/app.rc")
     list(APPEND SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/app.rc")
 endif()
 
-add_executable(${PROJECT_NAME} ${SOURCES})
-
 file(GLOB_RECURSE INCLUDE_DIRS
     LIST_DIRECTORIES true
     "${CMAKE_CURRENT_SOURCE_DIR}/include/*"
@@ -76,6 +74,8 @@ file(GLOB_RECURSE SCENE_SOURCES
 )
 
 list(APPEND SOURCES ${SCENE_SOURCES})
+
+add_executable(${PROJECT_NAME} ${SOURCES})
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${ALL_INCLUDE_DIRS})
 

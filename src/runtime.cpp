@@ -13,6 +13,8 @@ void runtime::init(Renderer* renderer, SDL_Event& event) {
     sceneM = new sceneManager;
     sceneM->init(renderer);
 
+    sceneM->create_scene(-1, false);
+
     using double_ms = std::chrono::duration<double, std::milli>;
     auto frameDuration = std::chrono::duration_cast<std::chrono::nanoseconds>(double_ms(1000.0 / fpsTarget));
 
@@ -33,7 +35,7 @@ void runtime::init(Renderer* renderer, SDL_Event& event) {
         renderer->clearScreen();
 
         // rendering loop
-        sceneManager->tick();
+        sceneM->tick();
 
         renderer->presentScreen();
 
