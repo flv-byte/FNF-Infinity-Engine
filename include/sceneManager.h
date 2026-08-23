@@ -18,7 +18,10 @@ struct sceneInfo
 class sceneManager {
 	Renderer* renderer;
 
+
 public:
+	virtual ~sceneManager() = default;
+
 	std::vector<std::unique_ptr<sceneInfo>> scenes;
 	int curScene;
 	sceneManager();

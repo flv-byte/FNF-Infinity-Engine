@@ -10,7 +10,7 @@
 
 void runtime::init(Renderer* renderer) {
     this->renderer = renderer;
-    sceneM = new sceneManager;
+    std::unique_ptr<sceneManager> sceneM = std::make_unique<sceneManager>();
     sceneM->init(renderer);
 
     sceneM->create_scene(-1, false);

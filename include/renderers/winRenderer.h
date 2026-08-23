@@ -6,9 +6,8 @@ class winRenderer {
 public:
 	SDL_Window* window;
 	SDL_Renderer* renderer;
-	SDL_Surface* surface;
-	SDL_Texture* texture;
-	SDL_Event event;
+
+	virtual ~winRenderer() = default;
 
 	virtual int init(const char* win_text, int w, int h);
 	virtual int quit();

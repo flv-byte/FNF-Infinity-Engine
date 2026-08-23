@@ -9,6 +9,8 @@ class runtime {
 	sceneManager* sceneM;
 
 	public:
+		virtual ~runtime() = default;
+
 		int fpsTarget = 60;
 		float fps;
 
