@@ -21,10 +21,6 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIG>")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/SDL" EXCLUDE_FROM_ALL)
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/SDL_image" EXCLUDE_FROM_ALL)
 
-if (WIN32 AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/app.rc")
-    list(APPEND SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/app.rc")
-endif()
-
 file(GLOB_RECURSE INCLUDE_DIRS
     LIST_DIRECTORIES true
     "${CMAKE_CURRENT_SOURCE_DIR}/include/*"
@@ -75,7 +71,17 @@ file(GLOB_RECURSE SCENE_SOURCES
 
 list(APPEND SOURCES ${SCENE_SOURCES})
 
+if (WIN32 AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/app.rc")
+    list(APPEND SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/app.rc")
+endif()
+
 add_executable(${PROJECT_NAME} ${SOURCES})
+
+if (MSVC)
+    target_precompile_headers(${PROJECT_NAME} PRIVATE
+        "$<$<COMPILE_LANGUAGE:CXX>:${CMAKE_CURRENT_SOURCE_DIR}/src/pch.h>"
+    )
+endif()
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${ALL_INCLUDE_DIRS})
 
