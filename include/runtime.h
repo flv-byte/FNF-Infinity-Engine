@@ -6,12 +6,11 @@
 
 class runtime {
 	Renderer* renderer;
-	SDL_Event event;
 	sceneManager* sceneM;
 
 	public:
 		int fpsTarget = 60;
 		float fps;
 
-		virtual void init(Renderer* renderer, SDL_Event& event);
+		void init(Renderer* renderer);
 };

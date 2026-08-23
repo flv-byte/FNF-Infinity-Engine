@@ -1,16 +1,14 @@
 ﻿#include <iostream>
+#include <memory>
 #include <renderer.h>
 #include <runtime.h>
 
 int main(int argc, char* argv[]) {
-    Renderer* renderer = new Renderer();
+    std::unique_ptr<Renderer> renderer = std::make_unique<Renderer>();
     renderer->init("FLV FNF", 960, 540);
-    SDL_Event& evt = renderer->event_pass();
-    runtime* rt = new runtime();
-    rt->init(renderer, evt);
+    std::unique_ptr<runtime> rt = std::make_unique<runtime>();
+    rt->init(renderer.get());
     renderer->quit();
-    delete renderer;
-    delete rt;
 
     return 0;
 }

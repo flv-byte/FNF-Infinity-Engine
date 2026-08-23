@@ -8,7 +8,7 @@
 #include <iostream>
 #include <sceneManager.h>
 
-void runtime::init(Renderer* renderer, SDL_Event& event) {
+void runtime::init(Renderer* renderer) {
     this->renderer = renderer;
     sceneM = new sceneManager;
     sceneM->init(renderer);
@@ -23,6 +23,7 @@ void runtime::init(Renderer* renderer, SDL_Event& event) {
     while (running) {
         auto frameStart = std::chrono::steady_clock::now();
 
+        SDL_Event event;
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_EVENT_QUIT) {
                 running = false;

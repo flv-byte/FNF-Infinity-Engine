@@ -16,10 +16,6 @@ int winRenderer::init(const char* win_text, int w, int h) {
 	return 0;
 }
 
-SDL_Event& winRenderer::event_pass() {
-	return event;
-}
-
 int winRenderer::quit() {
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
