@@ -1,7 +1,6 @@
 #pragma once
 
-#include <renderer.h>
-#include <sceneBase.h>
+#include <sceneinclude.h>
 
 class debugScene : public sceneBase
 {
@@ -9,5 +8,5 @@ class debugScene : public sceneBase
 
 public:
     void init(Renderer* renderer) override;
-    void tick(sceneInfo& info) override;
+    void tick(sceneInfo& info, RenderInfo renderinfo) override;
 };

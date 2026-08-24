@@ -5,6 +5,7 @@
 #include <SDL3_image/SDL_image.h>
 #include <memory>
 #include <sceneBase.h>
+#include <renderInfo.h>
 
 struct sceneInfo
 {
@@ -18,15 +19,20 @@ struct sceneInfo
 class sceneManager {
 	Renderer* renderer;
 
-
 public:
+
 	virtual ~sceneManager() = default;
 
 	std::vector<std::unique_ptr<sceneInfo>> scenes;
-	int curScene;
+	int currentScene = 0;
 	sceneManager();
 
 	void init(Renderer* renderer);
 	void tick();
 	void create_scene(int id, bool bgTask);
+	int switch_sceneUID(int uid);
+	int switch_sceneRight(int t);
+	int switch_sceneLeft(int t);
+	int switch_sceneID(int id);
+	int delete_sceneUID(int uid);
 };

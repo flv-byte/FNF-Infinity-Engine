@@ -1,11 +1,8 @@
 #pragma once
 
 #include <SDL3/SDL.h>
-
-struct Point {
-	int x;
-	int y;
-};
+#include <renderInfo.h>
+#include <point.h>
 
 struct Window {
 	int width;
@@ -57,7 +54,7 @@ public:
 	virtual int translateH(int h);
 
 	virtual int setDrawColor(SDL_Color color);
-	virtual int drawRectangleF(const SDL_FRect& rect);
-	virtual int drawRectangle(const SDL_FRect& rect);
-	virtual int drawLine(Point& point1, Point& point2);
+	virtual int drawRectangleF(const SDL_FRect& rect, RenderInfo info = {});
+	virtual int drawRectangle(const SDL_FRect& rect, RenderInfo info = {});
+	virtual int drawLine(const Point& point1, const Point& point2, RenderInfo info = {});
 };

@@ -2,6 +2,8 @@
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
 #include <SDL3/SDL_video.h>
+#include <renderInfo.h>
+#include <point.h>
 
 int winRenderer::init(const char* win_text, int w, int h) {
 
@@ -137,10 +139,13 @@ int winRenderer::setDrawColor(SDL_Color color) {
 	return 0;
 }
 
-int winRenderer::drawRectangleF(const SDL_FRect& rect) {
+int winRenderer::drawRectangleF(const SDL_FRect& rect, RenderInfo info) {
+	if (!info.render) {
+		return 2;
+	}
 	SDL_FRect translated{
-		(float)translateX(rect.x),
-		(float)translateY(rect.y),
+		(float)translateX(rect.x+info.offset.x),
+		(float)translateY(rect.y+info.offset.y),
 		(float)translateW(rect.w),
 		(float)translateH(rect.h)
 	};
@@ -148,10 +153,13 @@ int winRenderer::drawRectangleF(const SDL_FRect& rect) {
 	return SDL_RenderFillRect(renderer, &translated) ? 0 : 3;
 }
 
-int winRenderer::drawRectangle(const SDL_FRect& rect) {
+int winRenderer::drawRectangle(const SDL_FRect& rect, RenderInfo info) {
+	if (!info.render) {
+		return 2;
+	}
 	SDL_FRect translated{
-		(float)translateX(rect.x),
-		(float)translateY(rect.y),
+		(float)translateX(rect.x+info.offset.x),
+		(float)translateY(rect.y+info.offset.y),
 		(float)translateW(rect.w),
 		(float)translateH(rect.h)
 	};
@@ -159,6 +167,9 @@ int winRenderer::drawRectangle(const SDL_FRect& rect) {
 	return SDL_RenderRect(renderer, &translated) ? 0 : 3;
 }
 
-int winRenderer::drawLine(Point& point1, Point& point2) {
-	return SDL_RenderLine(renderer, (float)translateX(point1.x), (float)translateY(point1.y), (float)translateX(point2.x), (float)translateY(point2.y)) ? 0 : 3;
+int winRenderer::drawLine(const Point& point1, const Point& point2, RenderInfo info) {
+	if (!info.render) {
+		return 2;
+	}
+	return SDL_RenderLine(renderer, (float)translateX(point1.x + info.offset.x), (float)translateY(point1.y + info.offset.y), (float)translateX(point2.x + info.offset.x), (float)translateY(point2.y + info.offset.y)) ? 0 : 3;
 };
