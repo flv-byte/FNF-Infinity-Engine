@@ -20,16 +20,22 @@ void runtime::init(Renderer* renderer) {
 
     bool running = true;
 
-    int width;
-    int height;
+    Window windowDimensions;
      
     while (running) {
         auto frameStart = std::chrono::steady_clock::now();
 
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_EVENT_QUIT) {
+            switch (event.type) {
+            case SDL_EVENT_QUIT:
                 running = false;
+                break;
+            case SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED:
+                renderer->resize(
+                    event.window.data1,
+                    event.window.data2
+                );
                 break;
             }
         }
@@ -53,8 +59,7 @@ void runtime::init(Renderer* renderer) {
         auto frameTime = frameEnd - frameStart;
         fps = 1.0 / std::chrono::duration<double>(frameTime).count();
         std::cout << fps << '\n';
-        if (renderer->getGameDimensions(width, height) == 0) {
-            std::cout << width << 'x' << height << '\n';
-        }
+        windowDimensions = renderer->getGameDimensions();
+        std::cout << windowDimensions.width << 'x' << windowDimensions.height << '\n';
     }
 }

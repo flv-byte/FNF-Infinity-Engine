@@ -6,7 +6,6 @@
 
 class runtime {
 	Renderer* renderer;
-	sceneManager* sceneM;
 
 	public:
 		virtual ~runtime() = default;

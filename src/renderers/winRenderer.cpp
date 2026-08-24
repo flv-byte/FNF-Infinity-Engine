@@ -31,13 +31,11 @@ void winRenderer::clearScreen() {
 	SDL_RenderClear(renderer);
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
 	SDL_FRect rect;
-	int w, h;
-	winRenderer::getGameDimensions(w, h);
-	rect.x = winRenderer::translateX(0);
-	rect.y = winRenderer::translateY(0);
-	rect.w = w;
-	rect.h = h;
-	winRenderer::drawRectangle(rect);
+	rect.x = 0;
+	rect.y = 0;
+	rect.w = 1920;
+	rect.h = 1080;
+	winRenderer::drawRectangleF(rect);
 }
 
 void winRenderer::presentScreen() {
@@ -55,12 +53,13 @@ int winRenderer::getWindowDimensions(int& width, int& height) {
 	return 0;
 }
 
-int aspectRatio::getViewDimensions(winRenderer& renderer, int& width, int& height) {
-	const int result = renderer.getWindowDimensions(windowWidth, windowHeight);
-	if (result != 0) {
-		return result;
-	}
+void winRenderer::resize(int width, int height) {
+	aspectRatio.windowWidth = width;
+	aspectRatio.windowHeight = height;
+	aspectRatio.getViewDimensions(*this);
+}
 
+int aspectRatio::getViewDimensions(winRenderer& renderer) {
 	currentRatio = static_cast<float>(windowWidth) / windowHeight;
 
 	if (currentRatio > targetRatio) {
@@ -71,21 +70,19 @@ int aspectRatio::getViewDimensions(winRenderer& renderer, int& width, int& heigh
 		gameWidth = windowWidth;
 		gameHeight = (int)(windowWidth / targetRatio);
 	}
-	width = gameWidth;
-	height = gameHeight;
 	return 0;
 }
 
-int winRenderer::getGameDimensions(int& w, int& h) {
-	return aspectRatio.getViewDimensions(*this, w, h);
+Window winRenderer::getGameDimensions() {
+	Window window;
+	window.width = aspectRatio.gameWidth;
+	window.height = aspectRatio.gameHeight;
+	return window;
 }
 
 int winRenderer::translateX(int x) {
-	int width;
-	int height;
-	if (aspectRatio.getViewDimensions(*this, width, height) != 0) {
-		return -1;
-	}
+	int width = aspectRatio.gameWidth;
+	int height = aspectRatio.gameHeight;
 
 	int returnX;
 	int offsetX;
@@ -98,11 +95,8 @@ int winRenderer::translateX(int x) {
 };
 
 int winRenderer::translateY(int y) {
-	int width;
-	int height;
-	if (aspectRatio.getViewDimensions(*this, width, height) != 0) {
-		return 3;
-	}
+	int width = aspectRatio.gameWidth;
+	int height = aspectRatio.gameHeight;
 
 	int returnY;
 	int offsetY;
@@ -114,6 +108,28 @@ int winRenderer::translateY(int y) {
 	return returnY;
 };
 
+int winRenderer::translateW(int w) {
+	int width = aspectRatio.gameWidth;
+	int height = aspectRatio.gameHeight;
+
+	int returnX;
+
+	returnX = (float)w / config.width * width;
+
+	return returnX;
+};
+
+int winRenderer::translateH(int h) {
+	int width = aspectRatio.gameWidth;
+	int height = aspectRatio.gameHeight;
+
+	int returnY;
+
+	returnY = (float)h / config.height * height;
+
+	return returnY;
+};
+
 int winRenderer::setDrawColor(SDL_Color color) {
 	if (!SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a)) {
 		return 3;
@@ -121,9 +137,28 @@ int winRenderer::setDrawColor(SDL_Color color) {
 	return 0;
 }
 
-int winRenderer::drawRectangle(const SDL_FRect rect) {
-	if (!SDL_RenderFillRect(renderer, &rect)) {
-		return 3;
+int winRenderer::drawRectangleF(const SDL_FRect& rect) {
+	SDL_FRect translated{
+		(float)translateX(rect.x),
+		(float)translateY(rect.y),
+		(float)translateW(rect.w),
+		(float)translateH(rect.h)
 	};
-	return 0;
+
+	return SDL_RenderFillRect(renderer, &translated) ? 0 : 3;
 }
+
+int winRenderer::drawRectangle(const SDL_FRect& rect) {
+	SDL_FRect translated{
+		(float)translateX(rect.x),
+		(float)translateY(rect.y),
+		(float)translateW(rect.w),
+		(float)translateH(rect.h)
+	};
+
+	return SDL_RenderRect(renderer, &translated) ? 0 : 3;
+}
+
+int winRenderer::drawLine(Point& point1, Point& point2) {
+	return SDL_RenderLine(renderer, (float)translateX(point1.x), (float)translateY(point1.y), (float)translateX(point2.x), (float)translateY(point2.y)) ? 0 : 3;
+};
