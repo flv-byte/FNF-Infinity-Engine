@@ -7,6 +7,8 @@
 #include <sceneBase.h>
 #include <renderInfo.h>
 
+class assetManager;
+
 struct sceneInfo
 {
 	std::unique_ptr<sceneBase> instance = nullptr;
@@ -18,6 +20,7 @@ struct sceneInfo
 
 class sceneManager {
 	Renderer* renderer;
+	assetManager* assetM;
 
 public:
 
@@ -27,7 +30,7 @@ public:
 	int currentScene = 0;
 	sceneManager();
 
-	void init(Renderer* renderer);
+	void init(Renderer* renderer, assetManager* assetM);
 	void tick();
 	void create_scene(int id, bool bgTask);
 	int switch_sceneUID(int uid);

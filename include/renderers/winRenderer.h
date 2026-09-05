@@ -57,4 +57,6 @@ public:
 	virtual int drawRectangleF(const SDL_FRect& rect, RenderInfo info = {});
 	virtual int drawRectangle(const SDL_FRect& rect, RenderInfo info = {});
 	virtual int drawLine(const Point& point1, const Point& point2, RenderInfo info = {});
+
+	virtual int drawTexture(SDL_Texture* texture, const SDL_FRect* srcrect, const SDL_FRect& dstrect, RenderInfo info = {});
 };

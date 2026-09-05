@@ -4,3 +4,4 @@
 #include <sceneBase.h>
 #include <renderInfo.h>
 #include <sceneManager.h>
+#include <assetManager.h>

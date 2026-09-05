@@ -7,11 +7,13 @@
 #include <sleep.h>
 #include <iostream>
 #include <sceneManager.h>
+#include <assetManager.h>
 
 void runtime::init(Renderer* renderer) {
     this->renderer = renderer;
+    std::unique_ptr<assetManager> assetM = std::make_unique<assetManager>(renderer);
     std::unique_ptr<sceneManager> sceneM = std::make_unique<sceneManager>();
-    sceneM->init(renderer);
+    sceneM->init(renderer, assetM.get());
 
     sceneM->create_scene(-1, false);
 

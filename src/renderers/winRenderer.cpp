@@ -4,6 +4,7 @@
 #include <SDL3/SDL_video.h>
 #include <renderInfo.h>
 #include <point.h>
+#include <assetManager.h>
 
 int winRenderer::init(const char* win_text, int w, int h) {
 
@@ -173,3 +174,16 @@ int winRenderer::drawLine(const Point& point1, const Point& point2, RenderInfo i
 	}
 	return SDL_RenderLine(renderer, (float)translateX(point1.x + info.offset.x), (float)translateY(point1.y + info.offset.y), (float)translateX(point2.x + info.offset.x), (float)translateY(point2.y + info.offset.y)) ? 0 : 3;
 };
+
+int winRenderer::drawTexture(SDL_Texture* texture, const SDL_FRect* srcrect, const SDL_FRect& dstrect, RenderInfo info) {
+	if (!info.render) {
+		return 2;
+	}
+	const SDL_FRect dstrectf{
+	(float)translateX(dstrect.x + info.offset.x),
+	(float)translateY(dstrect.y + info.offset.y),
+	(float)translateW(dstrect.w),
+	(float)translateH(dstrect.h)
+	};
+	return SDL_RenderTexture(renderer, texture, srcrect, &dstrectf) ? 0 : 3;
+}

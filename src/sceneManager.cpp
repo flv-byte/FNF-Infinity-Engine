@@ -6,9 +6,11 @@
 #include <random>
 #include <algorithm>
 #include <renderInfo.h>
+#include <assetManager.h>
 
-void sceneManager::init(Renderer* renderer) {
-	this->renderer = renderer;
+void sceneManager::init(Renderer* renderer, assetManager* assetM) {
+    this->renderer = renderer;
+    this->assetM = assetM;
 }
 
 sceneManager::sceneManager() {
@@ -209,7 +211,7 @@ void sceneManager::create_scene(int id, bool bgTask)
         curScene->uid = uid;
         curScene->bgProcess = bgTask;
 
-        curScene->instance->init(renderer);
+        curScene->instance->init(renderer, assetM, this);
 
         scenes.push_back(std::move(curScene));
 
