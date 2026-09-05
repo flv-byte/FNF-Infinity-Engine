@@ -15,6 +15,7 @@ memLoad::memLoad(Renderer* renderer, assetManager* assetM) {
 int memLoad::loadIMGTexturePath(Renderer* renderer, MemorySession* session, const char* path, std::string name) {
 	Image image;
 	Node node;
+
 	SDL_Texture* texture = IMG_LoadTexture(renderer->renderer, path);
 	if (texture == NULL) {
 		return 3;
