@@ -2,7 +2,7 @@
 #include <unordered_map>
 #include <string>
 #include <memory>
-#include <MemoryUtil.h>
+#include <MemoryUtil.hpp>
 #include <renderer.h>
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
@@ -15,5 +15,7 @@ class memLoad {
 public:
 	memLoad(Renderer* renderer, assetManager* assetM);
 
-	static int loadIMGTexturePath(Renderer* renderer, MemorySession* session, const char* path, std::string name);
+	static Node& getNode(MemorySession* session, std::string name);
+	static Image* getNodeImage(MemorySession* session, std::string name);
+	static int loadIMGPath(Renderer* renderer, MemorySession* session, const char* path, std::string name);
 };

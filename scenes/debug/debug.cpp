@@ -10,8 +10,9 @@ void debugScene::init(Renderer* renderer, assetManager* assetM, sceneManager* sc
 	this->sceneM = sceneM;
 
 	memSession = assetM->createSession("debugScene_scene");
-	memLoad::loadIMGTexturePath(renderer, memSession, "assets/debug/lol.png", "debug_image");
-	test = std::any_cast<Image>(memSession->nodes.at("debug_image")->data).texture;
+	memLoad::loadIMGPath(renderer, memSession, "assets/debug/lol.png", "debug_image");
+	Image* image = memLoad::getNodeImage(memSession, "debug_image");
+	test = image->texture;
 }
 
 void debugScene::tick(sceneInfo& info, RenderInfo renderinfo) {

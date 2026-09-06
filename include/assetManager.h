@@ -2,7 +2,7 @@
 #include <unordered_map>
 #include <string>
 #include <memory>
-#include <MemoryUtil.h>
+#include <MemoryUtil.hpp>
 #include <renderer.h>
 #include "memory_loading/memload.h"
 
