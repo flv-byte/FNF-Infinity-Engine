@@ -11,7 +11,9 @@ class debugScene : public sceneBase
 
     MemorySession* memSession;
 
-    SDL_Texture* test;
+    Node* node = nullptr;
+    Image* image = nullptr;
+    SDL_Texture* test = nullptr;
 
 public:
     void init(Renderer* renderer, assetManager* assetM, sceneManager* sceneM) override;

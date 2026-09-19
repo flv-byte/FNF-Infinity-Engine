@@ -30,3 +30,11 @@ MemorySession* assetManager::getSession(const std::string& name) {
 void assetManager::destroySession(const std::string& name) {
     sessions.erase(name);
 }
+
+int assetManager::uploadTextures() {
+    for (auto& [name, session] : sessions) {
+        memload->update(renderer, session.get());
+    }
+
+    return 0;
+}

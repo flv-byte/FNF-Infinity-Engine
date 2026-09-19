@@ -10,13 +10,16 @@ void debugScene::init(Renderer* renderer, assetManager* assetM, sceneManager* sc
 	this->sceneM = sceneM;
 
 	memSession = assetM->createSession("debugScene_scene");
-	memLoad::loadIMGPath(renderer, memSession, "assets/debug/lol.png", "debug_image");
-	Image* image = memLoad::getNodeImage(memSession, "debug_image");
-	test = image->texture;
+	memLoad::createNode(memSession, "debug_image");
+	node = memLoad::getNode(memSession, "debug_image");
+	assetM->memload->loadIMGPathAsync(memSession, "assets/debug/lol.png", node);
+	image = memLoad::getNodeImage(node);
 }
 
 void debugScene::tick(sceneInfo& info, RenderInfo renderinfo) {
-	renderer->drawTexture(test, { NULL }, {0,0,1920,1080});
+	image = memLoad::getNodeImage(node);
+	test = image != nullptr ? image->texture : nullptr;
+	renderer->drawTexture(test, { NULL }, {0,0,1920,1080}, renderinfo);
 	renderer->setDrawColor(SDL_Color{255,0,0,255});
 	renderer->drawLine(Point{0,1080}, Point{1920,0}, renderinfo);
 	renderer->setDrawColor(SDL_Color{0,255,0,255});

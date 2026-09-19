@@ -5,6 +5,7 @@
 #include <renderInfo.h>
 #include <point.h>
 #include <assetManager.h>
+#include <GCT.hpp>
 
 int winRenderer::init(const char* win_text, int w, int h) {
 
@@ -17,6 +18,8 @@ int winRenderer::init(const char* win_text, int w, int h) {
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't create window and renderer: %s", SDL_GetError());
 		return 3;
 	}
+
+	global::gct.table["renderer"] = this;
 
 	return 0;
 }

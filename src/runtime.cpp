@@ -8,12 +8,16 @@
 #include <iostream>
 #include <sceneManager.h>
 #include <assetManager.h>
+#include <GCT.hpp>
 
 void runtime::init(Renderer* renderer) {
     this->renderer = renderer;
     std::unique_ptr<assetManager> assetM = std::make_unique<assetManager>(renderer);
     std::unique_ptr<sceneManager> sceneM = std::make_unique<sceneManager>();
+    global::gct.table["runtime"] = this;
     sceneM->init(renderer, assetM.get());
+    global::gct.table["assetManager"] = assetM.get();
+    global::gct.table["sceneManager"] = sceneM.get();
 
     sceneM->create_scene(-1, false);
 
@@ -48,6 +52,7 @@ void runtime::init(Renderer* renderer) {
 
         // rendering loop
         sceneM->tick();
+        assetM->uploadTextures();
 
         renderer->presentScreen();
 
