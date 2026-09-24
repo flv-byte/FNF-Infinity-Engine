@@ -2,6 +2,8 @@
 
 > **I hate programming with compiled languages. -flv**
 
+⚠️ VERY EARLY STAGE - NOT WORTH CLONING ⚠️ (saved you from cloning it)
+
 Infinity Engine (known as FLV FNF) is a personal project trying to recreate the popular game Friday Night Funkin' in C++.
 *Why?* Nobody knows. Some might say it's because of trying to be the owner of the greatest engine **ever**... Well that's not true.
 It's an engine made with love, building my first real project from the ground up. ❤️
