@@ -31,5 +31,9 @@ void debugScene::tick(sceneInfo& info, RenderInfo renderinfo) {
 }
 
 debugScene::~debugScene() {
-	assetM->destroySession(memSession->name);
+	if (assetM != nullptr && memSession != nullptr) {
+		assetM->destroySession(memSession->name);
+	}
 }
+
+REGISTER_SCENE("debug_1", debugScene);

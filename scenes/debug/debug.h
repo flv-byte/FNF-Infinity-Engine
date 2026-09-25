@@ -16,8 +16,8 @@ class debugScene : public sceneBase
     SDL_Texture* test = nullptr;
 
 public:
-    void init(Renderer* renderer, assetManager* assetM, sceneManager* sceneM) override;
-    void tick(sceneInfo& info, RenderInfo renderinfo) override;
+    void init(Renderer* renderer, assetManager* assetM, sceneManager* sceneM);
+    void tick(sceneInfo& info, RenderInfo renderinfo);
 
     ~debugScene();
 };

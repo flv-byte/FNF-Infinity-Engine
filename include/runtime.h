@@ -6,6 +6,7 @@
 
 class runtime {
 	Renderer* renderer;
+	std::unique_ptr<sceneManager> sceneM;
 
 	public:
 		virtual ~runtime() = default;

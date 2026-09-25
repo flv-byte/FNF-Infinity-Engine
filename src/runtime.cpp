@@ -13,13 +13,13 @@
 void runtime::init(Renderer* renderer) {
     this->renderer = renderer;
     std::unique_ptr<assetManager> assetM = std::make_unique<assetManager>(renderer);
-    std::unique_ptr<sceneManager> sceneM = std::make_unique<sceneManager>();
+    sceneM = std::make_unique<sceneManager>();
     global::gct.table["runtime"] = this;
     sceneM->init(renderer, assetM.get());
     global::gct.table["assetManager"] = assetM.get();
     global::gct.table["sceneManager"] = sceneM.get();
 
-    sceneM->create_scene(-1, false);
+    sceneM->create_scene("debug_1", false);
 
     using double_ms = std::chrono::duration<double, std::milli>;
     auto frameDuration = std::chrono::duration_cast<std::chrono::nanoseconds>(double_ms(1000.0 / fpsTarget));
