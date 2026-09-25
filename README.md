@@ -35,7 +35,8 @@ No real documentation is available for building the project, since it's *not* re
 
 Vague building instructions:
 
-Get every dependency required ( SDL, SDL_Image ), and put them as source in the "lib" folder.
+Get every dependency required ( SDL, SDL_Image ) as binary, and put them as following in the "lib" folder:
+-  LIB_NAME (folder for each) -> folder bin, folder lib, -> [LIB_NAME].dll, [LIB_NAME].lib.
 
 Build using CMake, checking for errors (compiling dependencies required, such as nasm).
 
