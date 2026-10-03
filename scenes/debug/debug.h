@@ -19,7 +19,7 @@ class debugScene
     SDL_FRect destinationRect{ 0, 0, 1920, 1080 };
 
 public:
-    void init(Renderer* renderer, assetManager* assetM, sceneManager* sceneM);
+    void init();
     void tick(sceneInfo& info, RenderInfo renderinfo);
 
     ~debugScene();

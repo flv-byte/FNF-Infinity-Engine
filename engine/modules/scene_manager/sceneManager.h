@@ -49,7 +49,7 @@ SceneDefinition makeSceneDefinition()
 	return {
 		[](sceneInfo& info, Renderer* renderer, assetManager* assetM, sceneManager* sceneM) {
 			auto& instance = info.state.emplace<T>();
-			instance.init(renderer, assetM, sceneM);
+			instance.init();
 		},
 		[](sceneInfo& info, RenderInfo renderinfo) {
 			std::any_cast<T&>(info.state).tick(info, renderinfo);

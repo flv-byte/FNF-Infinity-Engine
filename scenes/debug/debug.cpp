@@ -1,13 +1,13 @@
 #include "debug/debug.h"
 #include <sceneinclude.h>
-#include "memory_loading/memload.h"
 #include <iostream>
 #include <any>
+#include <engine_API.hpp>
 
-void debugScene::init(Renderer* renderer, assetManager* assetM, sceneManager* sceneM) {
-	this->renderer = renderer;
-	this->assetM = assetM;
-	this->sceneM = sceneM;
+void debugScene::init() {
+	this->renderer = std::any_cast<Renderer*>(global::gct.table.at("renderer"));
+	this->assetM = std::any_cast<assetManager*>(global::gct.table.at("assetManager"));
+	this->sceneM = std::any_cast<sceneManager*>(global::gct.table.at("sceneManager"));
 
 	memSession = assetM->createSession("debugScene_scene");
 	memLoad::createNode(memSession, "debug_image");
