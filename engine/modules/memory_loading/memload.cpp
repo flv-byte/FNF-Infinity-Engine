@@ -7,10 +7,11 @@
 #include "MemoryUtil.hpp"
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
+#include <GCT.hpp>
 
-memLoad::memLoad(Renderer* renderer, assetManager* assetM) {
-	this->renderer = renderer;
-	this->assetM = assetM;
+memLoad::memLoad() {
+	renderer = std::any_cast<Renderer*>(global::gct.table.at("renderer"));
+	assetM = std::any_cast<assetManager*>(global::gct.table.at("assetManager"));
 }
 
 // creating

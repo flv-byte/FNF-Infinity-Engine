@@ -43,9 +43,9 @@ add_precompiled_lib(SDL3_image::SDL3_image "SDL_image" "SDL3_image")
 # ==============================================================================
 file(GLOB_RECURSE SOURCES
     CONFIGURE_DEPENDS
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cc"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/engine/*.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/engine/*.cc"
+    "${CMAKE_CURRENT_SOURCE_DIR}/engine/*.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/scenes/*.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/scenes/*.cc"
     "${CMAKE_CURRENT_SOURCE_DIR}/scenes/*.c"
@@ -60,7 +60,7 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 # Precompiled headers
 if (MSVC)
     target_precompile_headers(${PROJECT_NAME} PRIVATE
-        "$<$<COMPILE_LANGUAGE:CXX>:${CMAKE_CURRENT_SOURCE_DIR}/src/pch.h>"
+        "$<$<COMPILE_LANGUAGE:CXX>:${CMAKE_CURRENT_SOURCE_DIR}/engine/pch.h>"
     )
 endif()
 
@@ -68,11 +68,11 @@ endif()
 # Include Directories
 # ==============================================================================
 set(ALL_INCLUDE_DIRS
-    "${CMAKE_CURRENT_SOURCE_DIR}/include"
+    "${CMAKE_CURRENT_SOURCE_DIR}/engine"
     "${CMAKE_CURRENT_SOURCE_DIR}/scenes"
 )
 
-file(GLOB_RECURSE SUBDIRS_INCLUDE LIST_DIRECTORIES true "${CMAKE_CURRENT_SOURCE_DIR}/include/*")
+file(GLOB_RECURSE SUBDIRS_INCLUDE LIST_DIRECTORIES true "${CMAKE_CURRENT_SOURCE_DIR}/engine/*")
 file(GLOB_RECURSE SUBDIRS_SCENES LIST_DIRECTORIES true "${CMAKE_CURRENT_SOURCE_DIR}/scenes/*")
 
 foreach(DIR ${SUBDIRS_INCLUDE} ${SUBDIRS_SCENES})

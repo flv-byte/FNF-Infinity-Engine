@@ -73,7 +73,7 @@ public:
 	std::unordered_map<std::string, SceneFactory> list_scenes;
 	int currentScene = 0;
 
-	void init(Renderer* renderer, assetManager* assetM);
+	void init();
 	void tick();
 	void create_scene(std::string id, bool bgTask);
 	static void register_scene(const std::string& name, SceneFactory factory);

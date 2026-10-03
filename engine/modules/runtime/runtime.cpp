@@ -3,6 +3,7 @@
 #include <SDL3_image/SDL_image.h>
 #include <thread>
 #include <chrono>
+#include <any>
 #include <runtime.h>
 #include <sleep.h>
 #include <iostream>
@@ -10,13 +11,11 @@
 #include <assetManager.h>
 #include <GCT.hpp>
 
-void runtime::init(Renderer* renderer) {
-    this->renderer = renderer;
-    std::unique_ptr<assetManager> assetM = std::make_unique<assetManager>(renderer);
+void runtime::init() {
+    renderer = std::any_cast<Renderer*>(global::gct.table.at("renderer"));
+    std::unique_ptr<assetManager> assetM = std::make_unique<assetManager>();
     sceneM = std::make_unique<sceneManager>();
-    global::gct.table["runtime"] = this;
-    sceneM->init(renderer, assetM.get());
-    global::gct.table["assetManager"] = assetM.get();
+    sceneM->init();
     global::gct.table["sceneManager"] = sceneM.get();
 
     sceneM->create_scene("debug_1", false);

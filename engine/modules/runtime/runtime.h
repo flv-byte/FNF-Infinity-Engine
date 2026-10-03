@@ -14,5 +14,5 @@ class runtime {
 		int fpsTarget = 60;
 		float fps;
 
-		void init(Renderer* renderer);
+		void init();
 };

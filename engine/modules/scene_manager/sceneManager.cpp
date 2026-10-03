@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <renderInfo.h>
 #include <assetManager.h>
+#include <GCT.hpp>
 
 namespace {
 	std::unordered_map<std::string, SceneFactory>& registeredScenes() {
@@ -14,9 +15,10 @@ namespace {
 	}
 }
 
-void sceneManager::init(Renderer* renderer, assetManager* assetM) {
-	this->renderer = renderer;
-	this->assetM = assetM;
+void sceneManager::init() {
+	renderer = std::any_cast<Renderer*>(global::gct.table.at("renderer"));
+	assetM = std::any_cast<assetManager*>(global::gct.table.at("assetManager"));
+	global::gct.table["sceneManager"] = this;
 }
 
 sceneManager::sceneManager() {

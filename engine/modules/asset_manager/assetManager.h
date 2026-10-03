@@ -13,7 +13,7 @@ private:
 	std::unordered_map<std::string, std::unique_ptr<MemorySession>> sessions;
 
 public:
-    assetManager(Renderer* renderer);
+    assetManager();
     std::unique_ptr<memLoad> memload;
 
     MemorySession* createSession(const std::string& name);

@@ -15,7 +15,7 @@ class memLoad {
     assetManager* assetM;
 
 public:
-    memLoad(Renderer* renderer, assetManager* assetM);
+    memLoad();
 
     static Node* createNode(MemorySession* session, std::string name);
 

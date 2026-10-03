@@ -3,12 +3,14 @@
 #include <string>
 #include <memory>
 #include <MemoryUtil.hpp>
+#include <GCT.hpp>
 
 class memLoad;
 
-assetManager::assetManager(Renderer* renderer) {
-    this->renderer = renderer;
-    memload = std::make_unique<memLoad>(renderer, this);
+assetManager::assetManager() {
+    renderer = std::any_cast<Renderer*>(global::gct.table.at("renderer"));
+    global::gct.table["assetManager"] = this;
+    memload = std::make_unique<memLoad>();
 }
 
 MemorySession* assetManager::createSession(const std::string& name) {
