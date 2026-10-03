@@ -178,7 +178,7 @@ int winRenderer::drawLine(const Point& point1, const Point& point2, RenderInfo i
 	return SDL_RenderLine(renderer, (float)translateX(point1.x + info.offset.x), (float)translateY(point1.y + info.offset.y), (float)translateX(point2.x + info.offset.x), (float)translateY(point2.y + info.offset.y)) ? 0 : 3;
 };
 
-int winRenderer::drawTexture(SDL_Texture* texture, const SDL_FRect* srcrect, const SDL_FRect& dstrect, RenderInfo info) {
+int winRenderer::drawTexture(SDL_Texture* texture, SDL_FRect& srcrect, SDL_FRect& dstrect, RenderInfo info) {
 	if (!info.render) {
 		return 2;
 	}
@@ -188,5 +188,7 @@ int winRenderer::drawTexture(SDL_Texture* texture, const SDL_FRect* srcrect, con
 	(float)translateW(dstrect.w),
 	(float)translateH(dstrect.h)
 	};
-	return SDL_RenderTexture(renderer, texture, srcrect, &dstrectf) ? 0 : 3;
+
+	const SDL_FRect srcrectf = srcrect;
+	return SDL_RenderTexture(renderer, texture, &srcrect, &dstrectf) ? 0 : 3;
 }

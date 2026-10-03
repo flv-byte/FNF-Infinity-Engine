@@ -69,4 +69,5 @@ void runtime::init(Renderer* renderer) {
         windowDimensions = renderer->getGameDimensions();
         std::cout << windowDimensions.width << 'x' << windowDimensions.height << '\n';
     }
+    sceneM.reset();
 }

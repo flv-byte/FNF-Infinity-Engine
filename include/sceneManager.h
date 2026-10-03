@@ -8,19 +8,57 @@
 #include <renderInfo.h>
 #include <unordered_map>
 #include <functional>
+#include <any>
+#include <string>
 
 class assetManager;
+class sceneManager;
+struct sceneInfo;
 
-using SceneFactory = std::function<std::unique_ptr<sceneBase>()>;
+using SceneInit = std::function<void(sceneInfo&, Renderer*, assetManager*, sceneManager*)>;
+using SceneTick = std::function<void(sceneInfo&, RenderInfo)>;
+using SceneDestroy = std::function<void(sceneInfo&)>;
+
+struct SceneDefinition {
+	SceneInit init;
+	SceneTick tick;
+	SceneDestroy destroy;
+};
+
+using SceneFactory = std::function<SceneDefinition()>;
 
 struct sceneInfo
 {
-	std::unique_ptr<sceneBase> instance;
+	SceneDefinition definition;
+	std::any state;
 
 	bool bgProcess = false;
 	std::string id;
 	int uid = 0;
+
+	~sceneInfo()
+	{
+		if (definition.destroy)
+			definition.destroy(*this);
+	}
 };
+
+template <typename T>
+SceneDefinition makeSceneDefinition()
+{
+	return {
+		[](sceneInfo& info, Renderer* renderer, assetManager* assetM, sceneManager* sceneM) {
+			auto& instance = info.state.emplace<T>();
+			instance.init(renderer, assetM, sceneM);
+		},
+		[](sceneInfo& info, RenderInfo renderinfo) {
+			std::any_cast<T&>(info.state).tick(info, renderinfo);
+		},
+		[](sceneInfo& info) {
+			info.state.reset();
+		}
+	};
+}
 
 class sceneManager {
 	Renderer* renderer;
@@ -51,8 +89,9 @@ public:
 #define REGISTER_SCENE_IMPL(name, type, id) \
 	static bool SCENE_REGISTER_CONCAT(reg_scene_, id) = []() { \
 		sceneManager::register_scene(name, []() { \
-            return std::make_unique<type>(); \
-        }); \
-        return true; \
+			return makeSceneDefinition<type>(); \
+		}); \
+		return true; \
 	}();
 #define REGISTER_SCENE(name, type) REGISTER_SCENE_IMPL(name, type, __COUNTER__)
+

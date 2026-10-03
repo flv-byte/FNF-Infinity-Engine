@@ -3,7 +3,7 @@
 #include <sceneinclude.h>
 #include <any>
 
-class debugScene : public sceneBase
+class debugScene
 {
     Renderer* renderer = nullptr;
     assetManager* assetM = nullptr;
@@ -14,6 +14,9 @@ class debugScene : public sceneBase
     Node* node = nullptr;
     Image* image = nullptr;
     SDL_Texture* test = nullptr;
+
+    SDL_FRect sourceRect{ 0, 0, 300, 200 };
+    SDL_FRect destinationRect{ 0, 0, 1920, 1080 };
 
 public:
     void init(Renderer* renderer, assetManager* assetM, sceneManager* sceneM);

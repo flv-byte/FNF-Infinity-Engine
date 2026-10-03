@@ -42,10 +42,10 @@ void sceneManager::tick() {
 		renderinfo.offset.x = 0;
 		renderinfo.offset.y = 0;
 		if (currentScene != scene->uid && scene->bgProcess) {
-			scene->instance->tick(*scene, renderinfo);
+			scene->definition.tick(*scene, renderinfo);
 		}
 		else if (currentScene == scene->uid) {
-			scene->instance->tick(*scene, renderinfo);
+			scene->definition.tick(*scene, renderinfo);
 		}
 	}
 }
@@ -211,12 +211,12 @@ void sceneManager::create_scene(std::string id, bool bgTask)
 
 	auto curScene = std::make_unique<sceneInfo>();
 
-	curScene->instance = list_scenes.at(id)();
+	curScene->definition = list_scenes.at(id)();
 	curScene->id = id;
 	curScene->uid = uid;
 	curScene->bgProcess = bgTask;
 
-	curScene->instance->init(renderer, assetM, this);
+	curScene->definition.init(*curScene, renderer, assetM, this);
 
 	scenes.push_back(std::move(curScene));
 }

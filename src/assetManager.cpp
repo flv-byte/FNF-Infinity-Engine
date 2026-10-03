@@ -31,6 +31,19 @@ void assetManager::destroySession(const std::string& name) {
     sessions.erase(name);
 }
 
+void assetManager::destroySession(MemorySession* session) {
+    if (session == nullptr) {
+        return;
+    }
+
+    for (auto it = sessions.begin(); it != sessions.end(); ++it) {
+        if (it->second.get() == session) {
+            sessions.erase(it);
+            return;
+        }
+    }
+}
+
 int assetManager::uploadTextures() {
     for (auto& [name, session] : sessions) {
         memload->update(renderer, session.get());

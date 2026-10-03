@@ -19,6 +19,7 @@ public:
     MemorySession* createSession(const std::string& name);
     MemorySession* getSession(const std::string& name);
     void destroySession(const std::string& name);
+    void destroySession(MemorySession* session);
 
     int uploadTextures();
 };
