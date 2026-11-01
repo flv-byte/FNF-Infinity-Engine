@@ -22,7 +22,7 @@ public:
     static Node* getNode(MemorySession* session, std::string name);
     static Image* getNodeImage(Node* node);
 
-    int loadIMGPath(MemorySession* session, const char* path, Node* node);
+    static void loadIMGPath(MemorySession* session, const char* path, Node* node);
     static void loadIMGPathAsync(MemorySession* session, const char* path, Node* node);
 
     static void update(Renderer* renderer, MemorySession* session);

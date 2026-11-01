@@ -15,16 +15,18 @@ class assetManager;
 class sceneManager;
 struct sceneInfo;
 
-using SceneInit = std::function<void(sceneInfo&, Renderer*, assetManager*, sceneManager*)>;
+using SceneInit = std::function<void(sceneInfo&)>;
 using SceneTick = std::function<void(sceneInfo&, RenderInfo)>;
 using SceneDestroy = std::function<void(sceneInfo&)>;
 
+// The three functions needed to run one scene.
 struct SceneDefinition {
 	SceneInit init;
 	SceneTick tick;
 	SceneDestroy destroy;
 };
 
+// Creates a new definition when a scene is added.
 using SceneFactory = std::function<SceneDefinition()>;
 
 struct sceneInfo
@@ -36,6 +38,7 @@ struct sceneInfo
 	std::string id;
 	int uid = 0;
 
+	// Destroy the scene's stored state before the scene is removed.
 	~sceneInfo()
 	{
 		if (definition.destroy)
@@ -43,13 +46,13 @@ struct sceneInfo
 	}
 };
 
+// Connects a scene class to the generic scene callbacks.
 template <typename T>
 SceneDefinition makeSceneDefinition()
 {
 	return {
-		[](sceneInfo& info, Renderer* renderer, assetManager* assetM, sceneManager* sceneM) {
-			auto& instance = info.state.emplace<T>();
-			instance.init();
+		[](sceneInfo& info) {
+			info.state.emplace<T>().init();
 		},
 		[](sceneInfo& info, RenderInfo renderinfo) {
 			std::any_cast<T&>(info.state).tick(info, renderinfo);
@@ -70,13 +73,26 @@ public:
 	virtual ~sceneManager() = default;
 
 	std::vector<std::unique_ptr<sceneInfo>> scenes;
-	std::unordered_map<std::string, SceneFactory> list_scenes;
+	// Stores factories that can create scene definitions.
+	inline static std::unordered_map<std::string, SceneFactory> list_scenes;
 	int currentScene = 0;
 
 	void init();
 	void tick();
+	// Creates a scene from its registered factory and adds it to the scene list.
 	void create_scene(std::string id, bool bgTask);
+	// Adds a factory to the list used when scenes are created.
 	static void register_scene(const std::string& name, SceneFactory factory);
+
+	// Registers a scene class by automatically creating its factory.
+	template <typename T>
+	static bool register_scene(const std::string& name)
+	{
+		register_scene(name, []() {
+			return makeSceneDefinition<T>();
+		});
+		return true;
+	}
 	int switch_sceneUID(int uid);
 	int switch_sceneRight(int t);
 	int switch_sceneLeft(int t);
@@ -84,14 +100,7 @@ public:
 	int delete_sceneUID(int uid);
 };
 
-#define SCENE_REGISTER_CONCAT_IMPL(left, right) left##right
-#define SCENE_REGISTER_CONCAT(left, right) SCENE_REGISTER_CONCAT_IMPL(left, right)
-#define REGISTER_SCENE_IMPL(name, type, id) \
-	static bool SCENE_REGISTER_CONCAT(reg_scene_, id) = []() { \
-		sceneManager::register_scene(name, []() { \
-			return makeSceneDefinition<type>(); \
-		}); \
-		return true; \
-	}();
-#define REGISTER_SCENE(name, type) REGISTER_SCENE_IMPL(name, type, __COUNTER__)
+// Registers a scene before the scene manager is created.
+#define REGISTER_SCENE(name, type) \
+	static const bool reg_scene_##type = sceneManager::register_scene<type>(name);
 

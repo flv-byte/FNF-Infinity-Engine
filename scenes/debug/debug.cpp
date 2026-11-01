@@ -12,7 +12,7 @@ void debugScene::init() {
 	memSession = assetM->createSession("debugScene_scene");
 	memLoad::createNode(memSession, "debug_image");
 	node = memLoad::getNode(memSession, "debug_image");
-	assetM->memload->loadIMGPathAsync(memSession, "assets/debug/lol.png", node);
+	memLoad::loadIMGPathAsync(memSession, "assets/debug/lol.png", node);
 }
 
 void debugScene::tick(sceneInfo& info, RenderInfo renderinfo) {

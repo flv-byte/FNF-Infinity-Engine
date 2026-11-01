@@ -8,22 +8,28 @@
 #include <assetManager.h>
 #include <GCT.hpp>
 
-namespace {
-	std::unordered_map<std::string, SceneFactory>& registeredScenes() {
-		static std::unordered_map<std::string, SceneFactory> scenes;
-		return scenes;
-	}
+int getUniqueSceneUid(const std::vector<std::unique_ptr<sceneInfo>>& scenes) {
+	std::random_device randomDevice;
+	std::mt19937 generator(randomDevice());
+	std::uniform_int_distribution<int> uidRange(1, 9999);
+
+	int uid;
+	do {
+		uid = uidRange(generator);
+	} while (std::find_if(scenes.begin(), scenes.end(), [uid](const auto& scene) {
+		return scene->uid == uid;
+	}) != scenes.end());
+
+	return uid;
 }
 
 void sceneManager::init() {
 	renderer = std::any_cast<Renderer*>(global::gct.table.at("renderer"));
 	assetM = std::any_cast<assetManager*>(global::gct.table.at("assetManager"));
-	global::gct.table["sceneManager"] = this;
 }
 
 sceneManager::sceneManager() {
 	scenes.reserve(5);
-	list_scenes = registeredScenes();
 }
 
 void sceneManager::tick() {
@@ -191,38 +197,16 @@ int sceneManager::delete_sceneUID(int targetUid) {
 
 void sceneManager::create_scene(std::string id, bool bgTask)
 {
-	std::random_device rd;
-	std::mt19937 gen(rd());
-	std::uniform_int_distribution<int> dist(1, 9999);
+	auto scene = std::make_unique<sceneInfo>();
+	scene->id = id;
+	scene->uid = getUniqueSceneUid(scenes);
+	scene->bgProcess = bgTask;
+	scene->definition = list_scenes.at(id)();
 
-	int uid;
-
-	do
-	{
-		uid = dist(gen);
-	} while (
-		std::find_if(
-			scenes.begin(),
-			scenes.end(),
-			[uid](const auto& scene)
-			{
-				return scene->uid == uid;
-			}
-		) != scenes.end()
-		);
-
-	auto curScene = std::make_unique<sceneInfo>();
-
-	curScene->definition = list_scenes.at(id)();
-	curScene->id = id;
-	curScene->uid = uid;
-	curScene->bgProcess = bgTask;
-
-	curScene->definition.init(*curScene, renderer, assetM, this);
-
-	scenes.push_back(std::move(curScene));
+	scene->definition.init(*scene);
+	scenes.push_back(std::move(scene));
 }
 
 void sceneManager::register_scene(const std::string& name, SceneFactory factory) {
-	registeredScenes()[name] = std::move(factory);
+	list_scenes[name] = std::move(factory);
 }

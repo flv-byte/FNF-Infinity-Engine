@@ -46,24 +46,17 @@ Image* memLoad::getNodeImage(Node* node) {
 
 // loading
 
-int memLoad::loadIMGPath(MemorySession* session, const char* path, Node* node) {
+void memLoad::loadIMGPath(MemorySession* session, const char* path, Node* node) {
+    Renderer* renderer = std::any_cast<Renderer*>(global::gct.table.at("renderer"));
 	auto image = std::make_shared<Image>();
 
 	SDL_Surface* surface = IMG_Load(path);
-	if (surface == NULL) {
-		return 3;
-	}
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(this->renderer->renderer, surface);
-	if (texture == NULL) {
-		SDL_DestroySurface(surface);
-		return 3;
-	}
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer->renderer, surface);
 
 	image->surface = surface;
 	image->texture = texture;
     node->data = image;
     node->state.state = progressStates::Ready;
-	return 0;
 }
 
 void memLoad::loadIMGPathAsync(MemorySession* session, const char* path, Node* node) {

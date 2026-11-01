@@ -17,6 +17,7 @@ void runtime::init() {
     sceneM = std::make_unique<sceneManager>();
     sceneM->init();
     global::gct.table["sceneManager"] = sceneM.get();
+    global::gct.table["assetManager"] = assetM.get();
 
     sceneM->create_scene("debug_1", false);
 
