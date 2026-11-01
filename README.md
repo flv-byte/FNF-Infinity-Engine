@@ -50,5 +50,5 @@ If you're changing the asset folder, it's REQUIRED to rebuild the project to hav
 
 ## ⚙️ Currently in The Making
 
-* ** Asset Streaming
+* ** Thread Manager (with jobs, Asset Streaming)
 * ** Input Manager
